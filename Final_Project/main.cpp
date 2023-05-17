@@ -7,20 +7,23 @@ GLMmodel * head = NULL;
 GLMmodel * body = NULL;
 GLMmodel * uparmR = NULL;///這邊改成我自己的檔案名稱，回家用
 GLMmodel * lowarmR = NULL;///++
-int show[4]={0,1,0,0};
+int show[4]={1,1,1,1};
+int ID=0;///0:頭 1:身體 2:上手臂 3:下手臂 ///week14
 void keyboard(){
-    if(key=='0') show[0]=!show[0];
-    if(key=='1') show[1]=!show[1];
-    if(key=='2') show[2]=!show[2];
-    if(key=='3') show[3]=!show[3];
+    if(key=='0') ID=0; //show[0]=!show[0];
+    if(key=='1') ID=1; //show[1]=!show[1];
+    if(key=='2') ID=2; //show[2]=!show[2];
+    if(key=='3') ID=3; //show[3]=!show[3];
+
+    glutPostRedisplay();
 }
 
 FILE*fout=NULL;
 FILE*fin=NULL;
 float teapotX=0,teapotY=0;
 float angle=0,angle2=0,angle3=0;//上禮拜我忘記打了
-void display(){
-
+void display()
+{
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glPushMatrix();
         glScalef(0.2,0.2,0.2);///week13
@@ -30,16 +33,25 @@ void display(){
             uparmR=glmReadOBJ("model/uparmR.obj");
             lowarmR=glmReadOBJ("model/lowarmR.obj");
         }
+        if(ID==0) glColor3f(1,0,0);///選定 設紅色
+        else glColor3f(1,1,1);///沒選定 設白色
         if(show[0]) glmDraw(head,GLM_MATERIAL);
+
+        if(ID==1) glColor3f(1,0,0);///選定 設紅色
+        else glColor3f(1,1,1);///沒選定 設白色
         if(show[1]) glmDraw(body,GLM_MATERIAL);
+
         glPushMatrix();
             glTranslatef(teapotX,teapotY,0);
 
+            if(ID==2) glColor3f(1,0,0);///選定 設紅色
+            else glColor3f(1,1,1);///沒選定 設白色
             if(show[2])glmDraw(uparmR,GLM_MATERIAL);
         glPopMatrix();
-        if(show[2]) glmDraw(uparmR,GLM_MATERIAL);
-        if(show[3]) glmDraw(lowarmR,GLM_MATERIAL);
 
+        if(ID==3) glColor3f(1,0,0);///選定 設紅色
+        else glColor3f(1,1,1);///沒選定 設白色
+        if(show[3]) glmDraw(lowarmR,GLM_MATERIAL);
     glPopMatrix();
     glutSwapBuffers();
 }
