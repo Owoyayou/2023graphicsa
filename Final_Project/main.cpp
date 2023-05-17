@@ -7,8 +7,8 @@ GLMmodel * head = NULL;
 GLMmodel * body = NULL;
 GLMmodel * uparmR = NULL;///這邊改成我自己的檔案名稱，回家用
 GLMmodel * lowarmR = NULL;///++
-int show[4]={1,1,1,1};
-int ID=0;///0:頭 1:身體 2:上手臂 3:下手臂 ///week14
+int show[4]={0,0,1,0};
+int ID=2;///0:頭 1:身體 2:上手臂 3:下手臂 ///week14
 void keyboard(){
     if(key=='0') ID=0; //show[0]=!show[0];
     if(key=='1') ID=1; //show[1]=!show[1];
@@ -42,7 +42,9 @@ void display()
         if(show[1]) glmDraw(body,GLM_MATERIAL);
 
         glPushMatrix();
-            glTranslatef(teapotX,teapotY,0);
+            glTranslatef(teapotX,teapotY,0);///week14
+            glRotatef(angle,0,0,1);
+            glTranslatef(1.200000,-0.453333,0);
 
             if(ID==2) glColor3f(1,0,0);///選定 設紅色
             else glColor3f(1,1,1);///沒選定 設白色
@@ -53,6 +55,8 @@ void display()
         else glColor3f(1,1,1);///沒選定 設白色
         if(show[3]) glmDraw(lowarmR,GLM_MATERIAL);
     glPopMatrix();
+    glColor3f(0,1,0);///放個小茶壺在正中心當成參考點
+    glutSolidTeapot(0.02);
     glutSwapBuffers();
 }
 
@@ -62,6 +66,7 @@ void motion(int x,int y){
     teapotY+=(x-oldY)/150.0;
     oldX=x;
     oldY=y;
+    angle=x;///week14
     printf("glTranslatef(%f,%f,0);\n",teapotX,teapotY);
     glutPostRedisplay();
     oldX=x;
